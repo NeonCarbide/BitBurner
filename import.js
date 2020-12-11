@@ -1,4 +1,4 @@
-let config = {
+const config = {
     folder: 'scripts',
     rootUrl: 'https://raw.githubusercontent.com/NeonCarbide/BitBurner/master/',
     serverPrefix: 'xenon'
@@ -7,7 +7,7 @@ let config = {
 export async function main(ns) {
     let filesImported = await importFiles(ns);
 
-    ns.tprint('-'.repeat(24))
+    ns.tprint('-'.repeat(24));
 
     if (filesImported) {
         ns.tprint(`Installed scripts to ${config.folder}`);

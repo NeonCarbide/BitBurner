@@ -7,7 +7,7 @@ export const main = async function(ns) {
 
     findServer(ns, 'home', 'home', checkValue);
     
-    ns.run(`/${getFolder()}/remoteHack.js`, 1, ...maxedServers);
+    ns.run(`/${getFolder()}/remoteHack.js`, 1, maxedServers.join(','));
 };
 
 function checkValue(ns, server) {
@@ -21,9 +21,7 @@ function checkValue(ns, server) {
 function findServer(ns, start, target, func) {
     let servers = ns.scan(target, true).filter((server) => server !== start && !server.includes(getServerPrefix()));
 
-    if (!ns.hasRootAccess(target)) {
-        return false;
-    }
+    if (!ns.hasRootAccess(target)) { return false; }
 
     servers.forEach((server) => {
         func.call(this, ns, server);
