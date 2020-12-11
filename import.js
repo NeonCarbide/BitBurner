@@ -25,7 +25,8 @@ async function importFiles(ns) {
         'dash.js',
         'hack.js',
         'purchaseServers.js',
-        'remoteHack.js'
+        'remoteHack.js',
+        'serverStatus.js'
     ];
 
     for (let file of files) {
