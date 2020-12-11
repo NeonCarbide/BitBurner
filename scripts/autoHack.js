@@ -1,3 +1,5 @@
+import { getHackScript, getServerPrefix } from 'import.js';
+
 let hackablePorts;
 
 export const main = async function(ns) {
@@ -7,7 +9,7 @@ export const main = async function(ns) {
 
 function findServer(ns, start, target, func) {
     // Get array of subservers for current server then filter out current server and userPC
-    let servers = ns.scan(target, true).filter((server) => server !== start && !server.includes('neon'));
+    let servers = ns.scan(target, true).filter((server) => server !== start && !server.includes(getServerPrefix()));
 
     // For each server in servers run hackServer on server then recursively call findServer
     servers.forEach((server) => {
@@ -23,7 +25,7 @@ function hackServer(ns, server) {
         ns.killall(server);
 
         // Get ram usage for script
-        let scriptRam = ns.getScriptRam('/scripts/chael/hack.js');
+        let scriptRam = ns.getScriptRam(getHackScript());
 
         // Get max ram of server
         let serverRam = ns.getServerRam(server)[0];
@@ -32,11 +34,11 @@ function hackServer(ns, server) {
         let threads = Math.floor(serverRam / scriptRam);
 
         // Copy hack.js to target server
-        ns.scp('/scripts/chael/hack.js', server);
+        ns.scp(getHackScript(), server);
 
         // Run hack.js on target server if it has any threads to run on
         if (threads > 0) {
-            ns.exec('/scripts/chael/hack.js', server, threads, server, threads);
+            ns.exec(getHackScript(), server, threads, server, threads);
         }
     }
 }

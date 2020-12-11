@@ -61,6 +61,10 @@ function buyNewNode(ns) {
     if (ns.getServerMoneyAvailable('home') >= ns.hacknet.getPurchaseNodeCost()) {
         let index = ns.hacknet.purchaseNode();
 
+        if (index < 0) {
+            return false;
+        }
+
         maxNodeCost = maxNodeCost || getNodeMaxedCost(ns, index);
 
         if (ns.getServerMoneyAvailable('home') >= maxNodeCost) {

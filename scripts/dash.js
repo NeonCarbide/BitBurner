@@ -1,3 +1,5 @@
+import { getFolder, getServerPrefix } from 'import.js';
+
 let hackablePorts;
 let hackableServers;
 
@@ -7,28 +9,30 @@ export const main = async function(ns) {
     findHackablePorts(ns);
     findServer(ns, 'home', 'home', serverReport);
 
+    let autoHack;
+
     if (hackableServers) {
-        let autoHack = await ns.prompt('Hack available servers?');
+        autoHack = await ns.prompt('Hack available servers?');
 
         if (autoHack) {
             ns.tprint('Injecting scripts...');
             ns.tprint('Hacking servers...');
-            ns.run('/scripts/chael/autoHack.js');
+            ns.run(`/${getFolder()}/autoHack.js`);
             ns.tprint('Servers hacked');
         }
     }
 
-    let ownedServers = await ns.prompt('Manage owned servers?');
+    let buyServers = await ns.prompt('Manage owned servers?');
 
-    if (ownedServers) {
-        ns.run('/scripts/chael/purchaseServers.js');
+    if (buyServers) {
+        ns.run(`/${getFolder()}/purchaseServers.js`);
     }
 
-    if (ownedServers || hackableServers) {
+    if (buyServers || autoHack) {
         let remoteHack = await ns.prompt('Refresh remote hacks?');
 
         if (remoteHack) {
-            ns.run('/scripts/chael/autoRemoteHack.js');
+            ns.run(`/${getFolder()}/autoRemoteHack.js`);
         }
     }
 };
@@ -60,7 +64,7 @@ function findHackablePorts(ns) {
 }
 
 function findServer(ns, startServer, targetServer, func) {
-    let servers = ns.scan(targetServer, true).filter((server) => server !== startServer && !server.includes('neon'));
+    let servers = ns.scan(targetServer, true).filter((server) => server !== startServer && !server.includes(getServerPrefix()));
 
     servers.forEach((server) => {
         func.call(this, ns, server);

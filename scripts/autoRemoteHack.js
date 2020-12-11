@@ -1,3 +1,5 @@
+import { getFolder, getServerPrefix } from 'import.js';
+
 let maxedServers;
 
 export const main = async function(ns) {
@@ -5,7 +7,7 @@ export const main = async function(ns) {
 
     findServer(ns, 'home', 'home', checkValue);
     
-    ns.run('/scripts/chael/remoteHack.js', 1, ...maxedServers);
+    ns.run(`/${getFolder()}/remoteHack.js`, 1, ...maxedServers);
 };
 
 function checkValue(ns, server) {
@@ -17,7 +19,7 @@ function checkValue(ns, server) {
 }
 
 function findServer(ns, start, target, func) {
-    let servers = ns.scan(target, true).filter((server) => server !== start && !server.includes('neon'));
+    let servers = ns.scan(target, true).filter((server) => server !== start && !server.includes(getServerPrefix()));
 
     if (!ns.hasRootAccess(target)) {
         return false;
