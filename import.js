@@ -1,6 +1,6 @@
 let config = {
     folder: 'scripts',
-    rootUrl: 'https://raw.githubusercontent.com/NeonCarbide/BitBurner/main/',
+    rootUrl: 'https://raw.githubusercontent.com/NeonCarbide/BitBurner/master/',
     serverPrefix: 'xenon'
 };
 
@@ -30,7 +30,12 @@ async function importFiles(ns) {
 
     for (let file of files) {
         let remoteFileName = `${config.rootUrl}scripts/${file}`;
+
+        ns.tprint(remoteFileName);
+
         let result = await ns.wget(remoteFileName, `/${getFolder()}/${file}`);
+
+        ns.tprint(result);
 
         filesImported = filesImported && result;
 
